@@ -1,0 +1,6 @@
+services:
+  web:
+    build: .
+    image: anilssonstrom/actionsdemo
+    ports:
+      - 5000:5000
