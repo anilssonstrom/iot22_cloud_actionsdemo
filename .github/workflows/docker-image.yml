@@ -27,35 +27,27 @@ jobs:
       - name: Compose push
         run: docker compose push
 
-#      - name: Build and push
-#        uses: docker/build-push-action@v4
-#        with:
-#          context: .
-#          file: ./Dockerfile
-#          push: true
-#          tags: ${{ secrets.DOCKERHUB_USERNAME }}/actionsdemo:latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@master
 
-#  deploy:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#      # checkout the repo
-#      - name: 'Checkout GitHub Action'
-#        uses: actions/checkout@master
-#
-#      - name: 'Login via Azure CLI'
-#        uses: azure/login@v1
-#        with:
-#          creds: ${{ secrets.AZURE_CREDENTIALS }}
-#
-#      - name: 'Deploy to Azure'
-#        uses: Azure/aci-deploy@v1
-#        with:
-#          resource-group: flasktest
-#          dns-name-label: flaskactiondemo
-#          image: docker.io/anilssonstrom/actionsdemo
-#          name: flask-actionsdemo
-#          location: 'north europe'
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Deploy to Azure'
+        uses: Azure/aci-deploy@v1
+        with:
+          resource-group: flasktest
+          dns-name-label: flaskactiondemo
+          image: docker.io/anilssonstrom/actionsdemo
+          name: flask-actionsdemo
+          location: 'north europe'
 
 
 #      -
